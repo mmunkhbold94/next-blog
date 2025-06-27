@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { MDXRemote } from 'next-mdx-remote/rsc'
-import { getPostBySlug, getAllPostSlugs } from '.src/lib/mdx'
+import { getPostBySlug, getAllPostSlugs } from '@/lib/mdx'
 import { format } from 'date-fns'
 
 interface BlogPostPageProps {
@@ -43,7 +43,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
         {post.tags && post.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-8">
-            {post.tags.map(tag => (
+            {post.tags.map((tag) => (
               <span
                 key={tag}
                 className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-md"
@@ -55,7 +55,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         )}
       </div>
 
-      <div className="prose prose-lg max-w-none">
+      <div className="prose prose-lg max-w-none dark:prose-invert">
         <MDXRemote source={post.content} />
       </div>
     </article>
