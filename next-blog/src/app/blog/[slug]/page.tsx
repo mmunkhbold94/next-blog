@@ -5,9 +5,9 @@ import { getPostBySlug, getAllPostSlugs } from ".src/lib/mdx"
 import { format } from "date-fns"
 
 interface BlogPostPageProps {
-    params: {
+    params: Promise<{
         slug: string
-    }
+    }>
 }
 
 export async function generateStaticParams() {
@@ -15,8 +15,9 @@ export async function generateStaticParams() {
     return slugs
 }
 
-export default function BlogPostPage({ params }: BlogPostPageProps) {
-    const post = getPostBySlug(params.slug)
+export default async function BlogPostPage({ params }: BlogPostPageProps) {
+    const { slug } = await params
+    const post = getPostBySlug(slug)
 
     if (!post) {
         notFound()
