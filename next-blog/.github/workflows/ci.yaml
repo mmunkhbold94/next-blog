@@ -1,0 +1,150 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint-and-type-check:
+    name: Lint and Type Check
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js 
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: 'next-blog/package-lock.json'
+    
+    - name: Install dependencies
+      run: |
+        cd next-blog
+        npm ci
+    
+    - name: Run ESLint
+      run: |
+        cd next-blog
+        npm run lint
+    
+    - name: Run TypeScript type check
+      run: |
+        cd next-blog
+        npx tsc --noEmit
+  
+  build-test:
+    name: Build Test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js 
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: 'next-blog/package-lock.json'
+    
+    - name: Install dependencies
+      run: |
+        cd next-blog
+        npm ci
+    
+    - name: Build the project
+      run: |
+        cd next-blog
+        npm run build
+    
+    - name: Check for build artifacts
+      run: |
+        cd next-blog
+        test -d ".next"
+  
+  security-audit:
+    name: Security audit
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: 'next-blog/package-lock.json'
+    
+    - name: Install dependencies
+      run: |
+        cd next-blog
+        npm ci
+    
+    - name: Run security audit
+      run: |
+        cd next-blog
+        npm audit --audit-level=moderate
+  
+  format-check:
+    name: Format Check
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: 'next-blog/package-lock.json'
+    
+    - name: Install dependencies
+      run: |
+        cd next-blog
+        npm ci
+    
+    - name: Check Prettier formatting
+      run: |
+        cd next-blog
+        npx prettier --check "src/**/*.{js,jsx,ts,tsx,json,css,md,mdx}"
+  
+  bundle-analysis:
+    name: Bundle Analysis 
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: 'next-blog/package-lock.json'
+
+    - name: Install dependencies
+      run: |
+        cd next-blog
+        npm ci
+    
+    - name: Build and analyze bundle
+      run: |
+        cd next-blog
+        npm run build
+    
+    - name: Upload bundle analysis report
+      uses: actions/upload-artifact@v4
+      with:
+        name: bundle-report
+        path: next-blog/.next/analyze/
