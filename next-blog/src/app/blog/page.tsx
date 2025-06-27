@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getAllPosts } from '.src/lib/mdx'
+import { getAllPosts } from '@/lib/mdx'
 import { format } from 'date-fns'
 
 export default function BlogPage() {

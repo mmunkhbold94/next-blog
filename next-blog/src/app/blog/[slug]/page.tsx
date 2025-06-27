@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { MDXRemote } from 'next-mdx-remote/rsc'
-import { getPostBySlug, getAllPostSlugs } from '.src/lib/mdx'
+import { getPostBySlug, getAllPostSlugs } from '@/lib/mdx'
 import { format } from 'date-fns'
 
 interface BlogPostPageProps {
@@ -55,7 +55,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         )}
       </div>
 
-      <div className="prose prose-lg max-w-none">
+      <div className="prose prose-lg max-w-none dark:prose-invert">
         <MDXRemote source={post.content} />
       </div>
     </article>
