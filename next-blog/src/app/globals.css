@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 
-
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -105,12 +104,12 @@ body {
   .prose strong {
     color: #f9fafb;
   }
-  
+
   .prose p,
   .prose li {
     color: #d1d5db;
   }
-  
+
   .prose code {
     background-color: #374151;
     color: #f9fafb;

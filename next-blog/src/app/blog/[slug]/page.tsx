@@ -43,7 +43,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
         {post.tags && post.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-8">
-            {post.tags.map((tag) => (
+            {post.tags.map(tag => (
               <span
                 key={tag}
                 className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-md"
